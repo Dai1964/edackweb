@@ -192,8 +192,14 @@
     padding: 32px 26px;
   }
   .point-icon { font-size: 2.1rem; margin-bottom: 18px; }
+  .point-card h3 { font-size: 1.12rem; margin-bottom: 10px; }
   .point-card p { font-size: 1.05rem; color: var(--text); }
   .point-card.solution { border-color: rgba(244,162,97,0.25); }
+  .point-card.seo { border-color: rgba(230,57,70,0.3); }
+  .point-card.seo p { color: var(--text-muted); font-size: 0.98rem; }
+
+  /* Subtle red emphasis on a single word within a section headline */
+  .accent-word { color: var(--accent); }
 
   /* ---------- How it works ---------- */
   .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: step; }
@@ -491,8 +497,8 @@
         </div>
         <div class="feature-card">
           <div class="feature-icon">🔍</div>
-          <h3>Google-Ready SEO</h3>
-          <p>Customers can find you.</p>
+          <h3>Google SEO Built-In</h3>
+          <p>Show up in local searches automatically, from day one.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">✉️</div>
@@ -503,6 +509,33 @@
           <div class="feature-icon">📱</div>
           <h3>Mobile First</h3>
           <p>Works perfectly on every phone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SEO ===== -->
+  <section class="section reveal" id="seo">
+    <div class="container">
+      <div class="section-head">
+        <h2>Get Found on <span class="accent-word">Google</span>. Automatically.</h2>
+        <p>Every EdackWeb website is built to be found. No extra cost. No technical knowledge.</p>
+      </div>
+      <div class="point-grid">
+        <div class="point-card seo">
+          <div class="point-icon">🔍</div>
+          <h3>Local Search Ready</h3>
+          <p>Your business shows up when local customers search for your trade. "Auto spray Shoreham", "kitchen fitter Brighton" — Google finds you.</p>
+        </div>
+        <div class="point-card seo">
+          <div class="point-icon">⚙️</div>
+          <h3>Built-In SEO. Zero Effort.</h3>
+          <p>Every page has the right structure, keywords, and signals Google needs. It happens automatically when you fill in your details.</p>
+        </div>
+        <div class="point-card seo">
+          <div class="point-icon">📍</div>
+          <h3>Google Maps Integration</h3>
+          <p>Your location appears on Google Maps. Customers can find you, get directions, and call you directly from search results.</p>
         </div>
       </div>
     </div>
