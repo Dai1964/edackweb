@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EdackWeb — Your Business, Ready For The World, Today!</title>
+<meta name="description" content="A professional website as easy as Facebook — built for your business. No coding, no jargon, no hassle. See real examples and get in touch today.">
+
+<!-- Async Google Fonts load: the stylesheet is fetched as media="print" (non-blocking),
+     then swapped to "all" once loaded, so first paint never waits on a font-hosting round trip. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --panel: #141414;
+    --panel-border: #232323;
+    --accent: #E63946;
+    --accent-hover: #C1121F;
+    --accent-2: #F4A261;
+    --text: #FFFFFF;
+    --text-muted: #A0A0A0;
+    --radius: 14px;
+    --radius-lg: 22px;
+    --max-width: 1160px;
+    --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+  a { color: inherit; }
+  img, svg { max-width: 100%; display: block; }
+  h1, h2, h3 { margin: 0; font-weight: 800; letter-spacing: -0.02em; }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  button { font-family: inherit; cursor: pointer; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 28px;
+    min-height: 48px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--accent); color: #fff; box-shadow: 0 8px 24px -8px rgba(230,57,70,0.6); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-outline { background: transparent; color: var(--text); border-color: #3a3a3a; }
+  .btn-outline:hover { border-color: var(--text); background: rgba(255,255,255,0.05); }
+  .btn-small { padding: 11px 20px; min-height: 40px; font-size: 0.9rem; }
+  .btn-full { width: 100%; }
+
+  /* ---------- Nav ---------- */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--panel-border);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .nav-logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.01em; text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-desktop-cta { display: inline-flex; }
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 48px;
+    height: 48px;
+    background: none;
+    border: 1px solid var(--panel-border);
+    border-radius: 10px;
+  }
+  .nav-toggle span { width: 20px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.2s ease, opacity 0.2s ease; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 0 22px;
+    border-top: 1px solid var(--panel-border);
+  }
+  .nav-mobile a.btn { width: 100%; }
+  body.nav-open .nav-mobile { display: flex; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 96px 0 90px;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: -20%;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 20%, rgba(230,57,70,0.35), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 75% 60%, rgba(244,162,97,0.16), transparent 60%),
+      var(--bg);
+    background-size: 140% 140%;
+    animation: heroDrift 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroDrift {
+    0%   { background-position: 0% 0%, 100% 100%, 0 0; }
+    100% { background-position: 30% 20%, 60% 40%, 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg { animation: none; }
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--accent-2);
+    background: rgba(244,162,97,0.1);
+    border: 1px solid rgba(244,162,97,0.3);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6.5vw, 4rem);
+    line-height: 1.08;
+    margin-bottom: 20px;
+  }
+  .hero-sub {
+    font-size: clamp(1.05rem, 2.4vw, 1.5rem);
+    font-weight: 400;
+    color: var(--text-muted);
+    max-width: 56ch;
+    margin: 0 auto 40px;
+  }
+  .hero-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- Sections (generic) ---------- */
+  .section { padding: 96px 0; border-top: 1px solid var(--panel-border); }
+  .section-head { max-width: 640px; margin: 0 auto 56px; text-align: center; }
+  .section-head h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); line-height: 1.15; margin-bottom: 14px; }
+  .section-head p { font-size: 1.1rem; color: var(--text-muted); }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- Problem / Solution grids ---------- */
+  .point-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .point-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 32px 26px;
+  }
+  .point-icon { font-size: 2.1rem; margin-bottom: 18px; }
+  .point-card p { font-size: 1.05rem; color: var(--text); }
+  .point-card.solution { border-color: rgba(244,162,97,0.25); }
+
+  /* ---------- How it works ---------- */
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; counter-reset: step; }
+  .step-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 34px 26px;
+    position: relative;
+  }
+  .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+  }
+  .step-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+  .step-card p { color: var(--text-muted); font-size: 0.98rem; }
+
+  /* ---------- Live demos ---------- */
+  .demo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .demo-card {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .demo-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .demo-tag {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-2);
+    background: rgba(244,162,97,0.1);
+    border: 1px solid rgba(244,162,97,0.3);
+    padding: 5px 12px;
+    border-radius: 999px;
+  }
+  .demo-card h3 { font-size: 1.35rem; }
+  .demo-card p { color: var(--text-muted); font-size: 1rem; }
+  .demo-note { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-top: 32px; }
+
+  /* ---------- Feature grid ---------- */
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .feature-card { padding: 8px 4px; }
+  .feature-icon { font-size: 1.9rem; margin-bottom: 14px; }
+  .feature-card h3 { font-size: 1.08rem; margin-bottom: 8px; }
+  .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+  /* ---------- Trades pills ---------- */
+  .trade-pills { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .trade-pill {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .trade-pill.more { color: var(--text-muted); border-style: dashed; }
+  .trades-note { text-align: center; color: var(--text-muted); margin-top: 30px; font-size: 0.98rem; }
+  .trades-note a { color: var(--accent-2); font-weight: 600; text-decoration: underline; }
+
+  /* ---------- Testimonial ---------- */
+  .testimonial-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: 44px;
+    text-align: center;
+  }
+  .stars { font-size: 1.3rem; letter-spacing: 4px; margin-bottom: 20px; }
+  .testimonial-quote { font-size: 1.3rem; line-height: 1.45; font-weight: 600; margin-bottom: 20px; }
+  .testimonial-author { color: var(--text-muted); font-size: 0.95rem; }
+  .testimonial-placeholder-note { text-align: center; color: var(--text-muted); font-size: 0.82rem; font-style: italic; margin-top: 18px; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 640px; margin: 0 auto; }
+  .form-row { display: flex; flex-direction: column; gap: 8px; }
+  .form-row label { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+  .form-row input, .form-row textarea {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 13px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    min-height: 48px;
+  }
+  .form-row textarea { min-height: 100px; resize: vertical; }
+  .form-row input:focus, .form-row textarea:focus { outline: none; border-color: var(--accent); }
+  .form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .contact-form { background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius-lg); padding: 36px; display: flex; flex-direction: column; gap: 20px; }
+  .contact-hint { text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+  .contact-status { text-align: center; font-size: 0.92rem; min-height: 1.2em; }
+  .contact-status.is-success { color: #6ee7a0; }
+
+  /* ---------- Footer ---------- */
+  .site-footer { border-top: 1px solid var(--panel-border); padding: 56px 0 32px; }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px; padding-bottom: 32px; }
+  .footer-brand-name { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+  .footer-brand-name span { color: var(--accent); }
+  .footer-tagline { color: var(--text-muted); font-size: 0.95rem; max-width: 320px; }
+  .footer-family { color: var(--text-muted); font-size: 0.85rem; margin-top: 10px; }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a { color: var(--text-muted); font-size: 0.9rem; text-decoration: none; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-bottom { border-top: 1px solid var(--panel-border); padding-top: 24px; color: var(--text-muted); font-size: 0.82rem; text-align: center; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .point-grid, .steps-grid, .feature-grid { grid-template-columns: 1fr 1fr; }
+    .demo-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .nav-desktop-cta { display: none; }
+    .nav-toggle { display: flex; }
+    .hero { padding: 64px 0 64px; }
+    .section { padding: 64px 0; }
+    .point-grid, .steps-grid, .feature-grid { grid-template-columns: 1fr; }
+    .form-2col { grid-template-columns: 1fr; }
+    .hero-ctas { flex-direction: column; align-items: stretch; }
+    .testimonial-card { padding: 30px 22px; }
+    .footer-top { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<header class="site-nav">
+  <div class="container nav-inner">
+    <a href="#top" class="nav-logo" id="top">Edack<span>Web</span></a>
+    <a href="#contact" class="btn btn-primary btn-small nav-desktop-cta">Get In Touch</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="container nav-mobile" id="navMobile">
+    <a href="#demos" class="btn btn-outline btn-full">See Live Examples</a>
+    <a href="#contact" class="btn btn-primary btn-full">Get In Touch</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <span class="eyebrow">As easy as Facebook, built for business</span>
+      <h1>Your Business, Ready For The World, Today!</h1>
+      <p class="hero-sub">A professional website as easy as Facebook — built for your business.</p>
+      <div class="hero-ctas">
+        <a href="#demos" class="btn btn-outline">See Live Examples</a>
+        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM ===== -->
+  <section class="section reveal" id="problem">
+    <div class="container">
+      <div class="section-head">
+        <h2>Most local businesses are invisible online.</h2>
+      </div>
+      <div class="point-grid">
+        <div class="point-card">
+          <div class="point-icon">⚠️</div>
+          <p>Your competitors have websites. You don't.</p>
+        </div>
+        <div class="point-card">
+          <div class="point-icon">🔍</div>
+          <p>Customers Google before they call. Are they finding you?</p>
+        </div>
+        <div class="point-card">
+          <div class="point-icon">📱</div>
+          <p>A Facebook page alone isn't enough anymore.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOLUTION ===== -->
+  <section class="section reveal" id="solution">
+    <div class="container">
+      <div class="section-head">
+        <h2>EdackWeb changes that. Simply.</h2>
+        <p>As easy as updating your Facebook. Your website updates the same way.</p>
+      </div>
+      <div class="point-grid">
+        <div class="point-card solution">
+          <div class="point-icon">✅</div>
+          <p>No coding. No technical knowledge. Ever.</p>
+        </div>
+        <div class="point-card solution">
+          <div class="point-icon">📸</div>
+          <p>Upload photos from your phone. Done.</p>
+        </div>
+        <div class="point-card solution">
+          <div class="point-icon">🌍</div>
+          <p>Google can find you from day one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section reveal" id="how-it-works">
+    <div class="container">
+      <div class="section-head">
+        <h2>How it works.</h2>
+        <p>Three simple steps. That's it.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Tell us about your business</h3>
+          <p>We set it up for you — no forms to fight with.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Add your photos and details</h3>
+          <p>As easy as Facebook. If you can post a photo, you can do this.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Your website goes live</h3>
+          <p>The world can find you — day or night.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LIVE DEMOS ===== -->
+  <section class="section reveal" id="demos">
+    <div class="container">
+      <div class="section-head">
+        <h2>Real websites. Built with EdackWeb.</h2>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-card">
+          <span class="demo-tag">Automotive</span>
+          <h3>Taffin Auto Spray</h3>
+          <p>Automotive spraying and collision repair — Shoreham, BN43</p>
+          <a href="https://taffin-auto-spray-production.up.railway.app" class="btn btn-outline" target="_blank" rel="noopener">View Live Site ↗</a>
+        </div>
+        <div class="demo-card">
+          <span class="demo-tag">Kitchen Fitting</span>
+          <h3>Sweet Dreams Kitchens</h3>
+          <p>Bespoke kitchen design and installation</p>
+          <a href="https://sweet-dreams-kitchens-production.up.railway.app" class="btn btn-outline" target="_blank" rel="noopener">View Live Site ↗</a>
+        </div>
+      </div>
+      <p class="demo-note">Every website is fully customised for your business. These are real, live examples.</p>
+    </div>
+  </section>
+
+  <!-- ===== WHAT YOU GET ===== -->
+  <section class="section reveal" id="features">
+    <div class="container">
+      <div class="section-head">
+        <h2>Everything your business needs online.</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🖥️</div>
+          <h3>Professional Website</h3>
+          <p>Looks great on every device.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚙️</div>
+          <h3>Easy Admin Panel</h3>
+          <p>Update it yourself, no help needed.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📷</div>
+          <h3>Photo Gallery</h3>
+          <p>Show off your work.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Google-Ready SEO</h3>
+          <p>Customers can find you.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✉️</div>
+          <h3>Contact Form</h3>
+          <p>Leads come straight to you.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Mobile First</h3>
+          <p>Works perfectly on every phone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRADES WE SERVE ===== -->
+  <section class="section reveal" id="trades">
+    <div class="container">
+      <div class="section-head">
+        <h2>Built for local businesses like yours.</h2>
+      </div>
+      <div class="trade-pills">
+        <span class="trade-pill">Auto Spray</span>
+        <span class="trade-pill">Kitchen Fitting</span>
+        <span class="trade-pill">Landscaping</span>
+        <span class="trade-pill">Carpentry</span>
+        <span class="trade-pill">Electrical</span>
+        <span class="trade-pill">Plumbing</span>
+        <span class="trade-pill">Cleaning</span>
+        <span class="trade-pill">Building</span>
+        <span class="trade-pill">Decorating</span>
+        <span class="trade-pill more">And more...</span>
+      </div>
+      <p class="trades-note">Don't see your trade? <a href="#contact">Get in touch.</a></p>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIAL ===== -->
+  <section class="section reveal" id="testimonial">
+    <div class="container">
+      <div class="testimonial-card">
+        <div class="stars">⭐⭐⭐⭐⭐</div>
+        <p class="testimonial-quote">"Finally a website I can actually use myself. Took me 20 minutes to set up."</p>
+        <p class="testimonial-author">— Local Business Owner, West Sussex</p>
+      </div>
+      <p class="testimonial-placeholder-note">This is a placeholder testimonial — to be replaced with a real one.</p>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section reveal" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <h2>Ready to get your business online?</h2>
+        <p>Tell us about your business and we'll be in touch within 24 hours.</p>
+      </div>
+      <div class="contact-grid">
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-2col">
+            <div class="form-row">
+              <label for="cName">Your name</label>
+              <input type="text" id="cName" name="name" required>
+            </div>
+            <div class="form-row">
+              <label for="cBusiness">Business name</label>
+              <input type="text" id="cBusiness" name="business" required>
+            </div>
+          </div>
+          <div class="form-2col">
+            <div class="form-row">
+              <label for="cTrade">Trade / Industry</label>
+              <input type="text" id="cTrade" name="trade" required>
+            </div>
+            <div class="form-row">
+              <label for="cPhone">Phone number</label>
+              <input type="tel" id="cPhone" name="phone" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="cEmail">Email address</label>
+            <input type="email" id="cEmail" name="email" required>
+          </div>
+          <div class="form-row">
+            <label for="cMessage">Message <span style="font-weight:400;">(optional)</span></label>
+            <textarea id="cMessage" name="message" placeholder="Tell us a bit about what you need..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Get My Website</button>
+          <p class="contact-hint">This opens your email app with your details filled in, ready to send.</p>
+          <p class="contact-status" id="contactStatus" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Edack<span>Web</span></div>
+        <p class="footer-tagline">Your business, ready for the world, today!</p>
+        <p class="footer-family">Part of the Edack family</p>
+      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="footerYear">2026</span> EdackWeb. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Footer year
+  var yearEl = document.getElementById('footerYear');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var navMobile = document.getElementById('navMobile');
+  if (navToggle) {
+    navToggle.addEventListener('click', function () {
+      var open = document.body.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', String(open));
+    });
+    navMobile.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.body.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Scroll reveal animations
+  var reveals = document.querySelectorAll('.reveal');
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-visible'); });
+  } else {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function (el) { observer.observe(el); });
+  }
+
+  // Contact form -> mailto (no server on GitHub Pages, so this is the delivery mechanism)
+  var form = document.getElementById('contactForm');
+  var status = document.getElementById('contactStatus');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('cName').value.trim();
+      var business = document.getElementById('cBusiness').value.trim();
+      var trade = document.getElementById('cTrade').value.trim();
+      var phone = document.getElementById('cPhone').value.trim();
+      var email = document.getElementById('cEmail').value.trim();
+      var message = document.getElementById('cMessage').value.trim();
+
+      if (!name || !business || !trade || !phone || !email) {
+        status.textContent = 'Please fill in all required fields.';
+        status.className = 'contact-status';
+        return;
+      }
+
+      var subject = 'New website enquiry from ' + business;
+      var bodyLines = [
+        'Name: ' + name,
+        'Business name: ' + business,
+        'Trade / Industry: ' + trade,
+        'Phone number: ' + phone,
+        'Email address: ' + email,
+        'Message: ' + (message || '(none)')
+      ];
+      var mailto = 'mailto:dai.evans1@gmail.com'
+        + '?subject=' + encodeURIComponent(subject)
+        + '&body=' + encodeURIComponent(bodyLines.join('\n'));
+
+      window.location.href = mailto;
+      status.textContent = "Opening your email app now — just hit send!";
+      status.className = 'contact-status is-success';
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
