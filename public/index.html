@@ -613,7 +613,7 @@
             <textarea id="cMessage" name="message" placeholder="Tell us a bit about what you need..."></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full">Get My Website</button>
-          <p class="contact-hint">This opens your email app with your details filled in, ready to send.</p>
+          <p class="contact-hint">We'll save your details and get back to you directly — no email app needed.</p>
           <p class="contact-status" id="contactStatus" role="status"></p>
         </form>
       </div>
@@ -681,7 +681,7 @@
     reveals.forEach(function (el) { observer.observe(el); });
   }
 
-  // Contact form -> mailto (no server on GitHub Pages, so this is the delivery mechanism)
+  // Contact form -> server-side POST /api/enquiry
   var form = document.getElementById('contactForm');
   var status = document.getElementById('contactStatus');
   if (form) {
@@ -700,22 +700,41 @@
         return;
       }
 
-      var subject = 'New website enquiry from ' + business;
-      var bodyLines = [
-        'Name: ' + name,
-        'Business name: ' + business,
-        'Trade / Industry: ' + trade,
-        'Phone number: ' + phone,
-        'Email address: ' + email,
-        'Message: ' + (message || '(none)')
-      ];
-      var mailto = 'mailto:dai.evans1@gmail.com'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(bodyLines.join('\n'));
+      var submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      status.textContent = 'Sending...';
+      status.className = 'contact-status';
 
-      window.location.href = mailto;
-      status.textContent = "Opening your email app now — just hit send!";
-      status.className = 'contact-status is-success';
+      fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          business: business,
+          trade: trade,
+          phone: phone,
+          email: email,
+          message: message
+        })
+      })
+        .then(function (res) { return res.json().then(function (data) { return { ok: res.ok, data: data }; }); })
+        .then(function (result) {
+          if (result.ok && result.data.ok) {
+            form.reset();
+            status.textContent = 'Thank you ' + result.data.name + '. We\'ll be in touch within 24 hours.';
+            status.className = 'contact-status is-success';
+          } else {
+            status.textContent = (result.data && result.data.error) || 'Something went wrong. Please try again.';
+            status.className = 'contact-status';
+          }
+        })
+        .catch(function () {
+          status.textContent = 'Network error — please try again.';
+          status.className = 'contact-status';
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+        });
     });
   }
 })();
